@@ -1,0 +1,75 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models",
+      "./node_modules/loopback-component-passport/lib/models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "AccessToken": {
+    "dataSource": "mongoDs",
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "user",
+        "foreignKey": "userId"
+      }
+    }
+  },
+  "ACL": {
+    "dataSource": "db",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "db",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "db",
+    "public": false
+  },
+  "User": {
+    "dataSource": "db",
+    "public": false
+  },
+  "user": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "accessToken": {
+    "dataSource": "db",
+    "public": false
+  },
+  "acl": {
+    "dataSource": "db",
+    "public": false
+  },
+  "roleMapping": {
+    "dataSource": "db",
+    "public": false
+  },
+  "role": {
+    "dataSource": "db",
+    "public": false
+  },
+  "scope": {
+    "dataSource": "db",
+    "public": false
+  },
+  "auth": {
+    "dataSource": false,
+    "public": true
+  }
+}

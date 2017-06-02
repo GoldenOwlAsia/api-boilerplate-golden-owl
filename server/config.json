@@ -1,0 +1,31 @@
+{
+  "restApiRoot": "/api",
+  "host": "0.0.0.0",
+  "port": 3000,
+  "cookieSecret": "246bace2-48cb-6892-85d7-0ae8160b07c8",
+  "facebook": {
+    "appId": "446563975515286",
+    "appSecret": "8b7adc4d261081e64c8b07ed276f518d"
+  },
+  "google": {
+    "clientId": "786135150702-v1ncv0c3v431s67r9lh51v7ut7pct2um.apps.googleusercontent.com",
+    "clientSecret": "v1L5BBtilrgQx1z1Vuu8PTap"
+  },
+  "remoting": {
+    "context": false,
+    "rest": {
+      "handleErrors": false,
+      "normalizeHttpPath": false,
+      "xml": false
+    },
+    "json": {
+      "strict": false,
+      "limit": "100kb"
+    },
+    "urlencoded": {
+      "extended": true,
+      "limit": "100kb"
+    },
+    "cors": false
+  }
+}
