@@ -49,6 +49,7 @@ module.exports.setupOauth2Method = (model, arrThirdParties) => {
       accepts: [
         {arg: 'code', type: 'string', 'http': {source: 'query'}},
         {arg: 'redirectUri', type: 'string', 'http': {source: 'query'}},
+        {arg: 'state', type: 'string', 'http': {source: 'query'}},
         {arg: 'req', type: 'object', 'http': {source: 'req'}},
         {arg: 'res', type: 'object', 'http': {source: 'res'}},
       ],

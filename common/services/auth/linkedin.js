@@ -4,6 +4,7 @@ const passport = require('passport');
 const LinkedInStrategy = require('passport-linkedin-token-oauth2').Strategy;
 const request = require('request');
 const Promise = require('bluebird');
+const random = require('randomstring');
 const app = require('../../../server/server.js');
 
 linkedinAuth();
@@ -54,16 +55,15 @@ function linkedinAuth() {
     profileURL: 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,email-address,picture-url)?format=json',
   },
   (accessToken, refreshToken, profile, done) => {
-    process.nextTick(() => {
-      const params = {
-        linkedId: profile.id,
-        email: profile._json.emailAddress,
-        firstName: profile._json.firstName,
-        lastName: profile._json.lastName,
-        avatarUrl: profile._json.pictureUrl,
-      };
-      return this._findOrCreateUser(params, done);
-    });
+    const params = {
+      linkedId: profile.id,
+      email: profile._json.emailAddress || `${profile.id}@linkedin.goldenowl.asia`,
+      firstName: profile._json.firstName,
+      lastName: profile._json.lastName,
+      avatarUrl: profile._json.pictureUrl,
+      password: random.generate(),
+    };
+    return findOrCreateUser(params, done);
   }));
 }
 

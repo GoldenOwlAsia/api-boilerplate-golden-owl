@@ -14,20 +14,38 @@ module.exports = function(Auth) {
     }).catch(cb);
   };
 
-  Auth.facebook = (code, redirectUri, req, res, cb) => {
+  Auth.facebook = (code, redirectUri, state, req, res, cb) => {
     AuthService.authenticateFacebook(req, res).then(token => {
       cb(null, token);
     }).catch(cb);
   };
 
-  Auth.google = (code, redirectUri, req, res, cb) => {
+  Auth.google = (code, redirectUri, state, req, res, cb) => {
     AuthService.authenticateGoogle(req, res).then(token => {
       cb(null, token);
     }).catch(cb);
   };
 
-  Auth.linkedin = (code, redirectUri, req, res, cb) => {
+  Auth.linkedin = (code, redirectUri, state, req, res, cb) => {
     AuthService.authenticateLinkedin(req, res).then(token => {
+      cb(null, token);
+    }).catch(cb);
+  };
+
+  Auth.github = (code, redirectUri, state, req, res, cb) => {
+    AuthService.authenticateGithub(req, res).then(token => {
+      cb(null, token);
+    }).catch(cb);
+  };
+
+  Auth.twitter = (code, redirectUri, state, req, res, cb) => {
+    AuthService.authenticateTwitter(req, res).then(token => {
+      cb(null, token);
+    }).catch(cb);
+  };
+
+  Auth.instagram = (code, redirectUri, state, req, res, cb) => {
+    AuthService.authenticateInstagram(req, res).then(token => {
       cb(null, token);
     }).catch(cb);
   };
@@ -57,5 +75,12 @@ module.exports = function(Auth) {
     ],
   });
 
-  setupOauth2Method(Auth, ['facebook', 'google', 'linkedin']);
+  setupOauth2Method(Auth, [
+    'facebook',
+    'google',
+    'linkedin',
+    'github',
+    'instagram',
+    'twitter',
+  ]);
 };

@@ -1,26 +1,26 @@
 'use strict';
 
 const passport = require('passport');
-const GoogleTokenStrategy = require('passport-google-token').Strategy;
+const InstagramTokenStrategy = require('passport-instagram-token');
 const request = require('request');
 const Promise = require('bluebird');
 const random = require('randomstring');
 const app = require('../../../server/server.js');
 
-googleAuth();
+instagramAuth();
 
-function getGoogleAccessToken(code, redirectUri) {
+function getInstagramAccessToken(code, redirectUri) {
   return new Promise((resolve, reject) => {
-    const config = app.get('google');
-    const url = 'https://www.googleapis.com/oauth2/v4/token';
+    const config = app.get('instagram');
+    const url = 'https://api.instagram.com/oauth/access_token';
     request.post({
       url: url,
       form: {
         'client_id': config.clientId,
         'client_secret': config.clientSecret,
         'redirect_uri': redirectUri,
-        'grant_type': 'authorization_code',
         'code': code,
+        'grant_type': 'authorization_code',
       },
     }, (error, response, body) => {
       if (error) reject(error);
@@ -30,9 +30,9 @@ function getGoogleAccessToken(code, redirectUri) {
   });
 }
 
-function googlePassport(req, res) {
+function instagramPassport(req, res) {
   return new Promise((resolve, reject) => {
-    passport.authenticate('google-auth', (err, user, info) => {
+    passport.authenticate('instagram-auth', (err, user, info) => {
       if (err) return reject(err);
       if (!user) return reject(new Error('Unauthorized!'));
       user.createAccessToken(5000, (err, token) => {
@@ -42,22 +42,22 @@ function googlePassport(req, res) {
   });
 }
 
-function googleAuth() {
-  const config = app.get('google');
-  passport.use('google-auth', new GoogleTokenStrategy({
+function instagramAuth() {
+  const config = app.get('instagram');
+  passport.use('instagram-auth', new InstagramTokenStrategy({
     clientID: config.clientId,
     clientSecret: config.clientSecret,
-  }, (AccessToken, refreshToken, profile, done) => {
+    passReqToCallback: true,
+  }, (req, accessToken, refreshToken, profile, next) => {
     const params = {
-      googleId: profile.id,
-      email: profile._json.email || `${profile.id}@google.goldenowl.asia`,
-      lastName: profile._json.given_name,
-      firstName: profile._json.family_name,
-      avatarUrl: profile._json.picture,
-      gender: profile._json.gender,
+      instagramId: profile.id,
+      email: profile.emails[0] || `${profile.id}@instagram.goldenowl.asia`,
+      firstName: profile.name.familyName,
+      lastName: profile.name.givenName,
+      avatarUrl: profile._json.data.profile_picture,
       password: random.generate(),
     };
-    return findOrCreateUser(params, done);
+    return findOrCreateUser(params, next);
   }));
 }
 
@@ -77,9 +77,9 @@ module.exports = (req, res) => {
   return new Promise((resolve, reject) => {
     const code = req.query.code;
     const redirectUri = req.query.redirectUri;
-    return getGoogleAccessToken(code, redirectUri).then(token => {
+    return getInstagramAccessToken(code, redirectUri).then(token => {
       req.query['access_token'] = token;
-      googlePassport(req, res).then(response => {
+      instagramPassport(req, res).then(response => {
         resolve(response);
       }).catch(reject);
     }).catch(reject);

@@ -11,6 +11,22 @@
     "clientId": "786135150702-v1ncv0c3v431s67r9lh51v7ut7pct2um.apps.googleusercontent.com",
     "clientSecret": "v1L5BBtilrgQx1z1Vuu8PTap"
   },
+  "github": {
+    "clientId": "ef2409c96d5e5133b726",
+    "clientSecret": "b076b516ed658a7ce30478e11ac0d02e1d8424f9"
+  },
+  "instagram": {
+    "clientId": "8d193f054aa74d5fbd3e2e1b64cba6a2",
+    "clientSecret": "a5071e0365064c7999ccf2ed2f1ba8f6"
+  },
+  "linkedin": {
+    "clientId": "81hxo4oxs2ty0o",
+    "clientSecret": "li5TEqAHpHzCbGuH"
+  },
+  "twitter": {
+    "consumerKey": "i1UTBiNJmOMEJOG0txYR7XB65",
+    "consumerSecret": "grVrZHYt8kLaV4rycothg5bgs872JFsx4as7TQ8PPk8xfK4ID1"
+  },
   "remoting": {
     "context": false,
     "rest": {

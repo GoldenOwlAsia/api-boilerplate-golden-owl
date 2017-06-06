@@ -112,6 +112,10 @@ array-union@^1.0.1:
   dependencies:
     array-uniq "^1.0.1"
 
+array-uniq@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/array-uniq/-/array-uniq-1.0.2.tgz#5fcc373920775723cfd64d65c64bef53bf9eba6d"
+
 array-uniq@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/array-uniq/-/array-uniq-1.0.3.tgz#af6ac877a25cc7f74e058894753858dfdb24fdb6"
@@ -2399,6 +2403,12 @@ passport-facebook@^2.1.1:
   dependencies:
     passport-oauth2 "1.x.x"
 
+passport-github-token@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/passport-github-token/-/passport-github-token-2.1.0.tgz#d7fdb11a1c5ab8554cdaf1ffe6d5b34002db8131"
+  dependencies:
+    passport-oauth "1.0.0"
+
 passport-github2@^0.1.10:
   version "0.1.10"
   resolved "https://registry.yarnpkg.com/passport-github2/-/passport-github2-0.1.10.tgz#50a21c1e95b83113e4da32c81c2c1a64429bb5bd"
@@ -2417,6 +2427,12 @@ passport-google-token@^0.1.2:
   dependencies:
     passport-oauth "^1.0.0"
     pkginfo "0.2.x"
+
+passport-instagram-token@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/passport-instagram-token/-/passport-instagram-token-2.3.0.tgz#099b301a09a1b43d40c451325fc5ead692f4c099"
+  dependencies:
+    passport-oauth "1.0.0"
 
 passport-linkedin-oauth2@^1.5.0:
   version "1.5.0"
@@ -2473,6 +2489,12 @@ passport-oauth@1.0.0, passport-oauth@^1.0.0:
 passport-strategy@1.x.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
+
+passport-twitter-token@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/passport-twitter-token/-/passport-twitter-token-1.3.0.tgz#d2e0b23370ec89a2982f7d59d4e02da6e6466e29"
+  dependencies:
+    passport-oauth "1.0.0"
 
 passport-twitter@^1.0.4:
   version "1.0.4"
@@ -2610,6 +2632,12 @@ randomatic@^1.1.3:
   dependencies:
     is-number "^2.0.2"
     kind-of "^3.0.2"
+
+randomstring@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/randomstring/-/randomstring-1.1.5.tgz#6df0628f75cbd5932930d9fe3ab4e956a18518c3"
+  dependencies:
+    array-uniq "1.0.2"
 
 range-parser@~1.2.0:
   version "1.2.0"

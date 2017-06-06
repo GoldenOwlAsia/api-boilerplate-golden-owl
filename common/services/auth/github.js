@@ -1,38 +1,43 @@
 'use strict';
 
 const passport = require('passport');
-const GoogleTokenStrategy = require('passport-google-token').Strategy;
+const GithubTokenStrategy = require('passport-github-token');
 const request = require('request');
 const Promise = require('bluebird');
 const random = require('randomstring');
 const app = require('../../../server/server.js');
 
-googleAuth();
+githubAuth();
 
-function getGoogleAccessToken(code, redirectUri) {
+function getGithubAccessToken(code, redirectUri, state) {
   return new Promise((resolve, reject) => {
-    const config = app.get('google');
-    const url = 'https://www.googleapis.com/oauth2/v4/token';
+    const config = app.get('github');
+    const url = 'https://github.com/login/oauth/access_token';
     request.post({
       url: url,
       form: {
         'client_id': config.clientId,
         'client_secret': config.clientSecret,
         'redirect_uri': redirectUri,
-        'grant_type': 'authorization_code',
         'code': code,
+        'state': state,
       },
     }, (error, response, body) => {
       if (error) reject(error);
-      const jbody = JSON.parse(body);
-      resolve(jbody.access_token);
+      const arrBody = body.split('&');
+      arrBody.forEach(item => {
+        const result = item.split('=');
+        if (result[0] === 'access_token') {
+          resolve(result[1]);
+        }
+      });
     });
   });
 }
 
-function googlePassport(req, res) {
+function githubPassport(req, res) {
   return new Promise((resolve, reject) => {
-    passport.authenticate('google-auth', (err, user, info) => {
+    passport.authenticate('github-auth', (err, user, info) => {
       if (err) return reject(err);
       if (!user) return reject(new Error('Unauthorized!'));
       user.createAccessToken(5000, (err, token) => {
@@ -42,19 +47,18 @@ function googlePassport(req, res) {
   });
 }
 
-function googleAuth() {
-  const config = app.get('google');
-  passport.use('google-auth', new GoogleTokenStrategy({
+function githubAuth() {
+  const config = app.get('github');
+  passport.use('github-auth', new GithubTokenStrategy({
     clientID: config.clientId,
     clientSecret: config.clientSecret,
-  }, (AccessToken, refreshToken, profile, done) => {
+  }, (accessToken, refreshToken, profile, done) => {
     const params = {
-      googleId: profile.id,
-      email: profile._json.email || `${profile.id}@google.goldenowl.asia`,
-      lastName: profile._json.given_name,
-      firstName: profile._json.family_name,
-      avatarUrl: profile._json.picture,
-      gender: profile._json.gender,
+      githubId: profile.id,
+      firstName: profile.name.familyName,
+      lastName: profile.name.givenName,
+      avatarUrl: profile._json.avatar_url,
+      email: profile.emails[0].value || `${profile.id}@github.goldenowl.asia`,
       password: random.generate(),
     };
     return findOrCreateUser(params, done);
@@ -62,7 +66,7 @@ function googleAuth() {
 }
 
 function findOrCreateUser(params, done) {
-  const User = app.models.user;
+  var User = app.models.user;
   User.findOrCreate({
     'where': {
       'email': params.email,
@@ -77,9 +81,10 @@ module.exports = (req, res) => {
   return new Promise((resolve, reject) => {
     const code = req.query.code;
     const redirectUri = req.query.redirectUri;
-    return getGoogleAccessToken(code, redirectUri).then(token => {
+    const state = req.query.state;
+    return getGithubAccessToken(code, redirectUri, state).then(token => {
       req.query['access_token'] = token;
-      googlePassport(req, res).then(response => {
+      githubPassport(req, res).then(response => {
         resolve(response);
       }).catch(reject);
     }).catch(reject);

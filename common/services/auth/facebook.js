@@ -4,6 +4,7 @@ const passport = require('passport');
 const FacebookTokenStrategy = require('passport-facebook-token');
 const request = require('request');
 const Promise = require('bluebird');
+const random = require('randomstring');
 const app = require('../../../server/server.js');
 facebookAuth();
 
@@ -44,18 +45,19 @@ function facebookAuth() {
       process.nextTick(() => {
         const params = {
           avatarUrl: `https://graph.facebook.com/${profile.id}/picture?type=normal`,
-          email: profile._json.email,
+          email: profile._json.email || `${profile.id}@facebook.goldenowl.asia`,
           firstName: profile._json.first_name,
           lastName: profile._json.last_name,
           facebookId: profile.id,
+          password: random.generate(),
         };
-        return _findOrCreateUser(params, done);
+        return findOrCreateUser(params, done);
       });
     }
   ));
 }
 
-function _findOrCreateUser(params, done) {
+function findOrCreateUser(params, done) {
   var User = app.models.user;
   User.findOrCreate({
     'where': {
